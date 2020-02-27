@@ -53,11 +53,14 @@ TEST(test_simple_player_make_trump) {
   delete bob;
 }
 
+
+
 TEST(test_simple_player_lead_card) {
   Player * bob = Player_factory("Bob", "Simple");
   add_cards(bob);
   Card nine_spades(Card::RANK_NINE, Card::SUIT_SPADES);
   bob->add_and_discard(nine_spades);
+  //bob->print_hand();
   Card card_led = bob->lead_card(Card::SUIT_SPADES);
   ASSERT_EQUAL(card_led, nine_spades); //check led card
   delete bob;

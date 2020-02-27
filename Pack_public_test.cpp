@@ -16,7 +16,9 @@ static const int PACK_SIZE = 24;
 TEST(test_pack_default_ctor) {
   Pack pack;
   Card first_card = pack.deal_one();
+  Card second_card = pack.deal_one();
   ASSERT_EQUAL(first_card, Card(Card::RANK_NINE, Card::SUIT_SPADES));
+  ASSERT_EQUAL(second_card, Card(Card::RANK_TEN, Card::SUIT_SPADES));
 }
 
 TEST(test_pack_istream_ctor) {
@@ -49,6 +51,12 @@ TEST(test_pack_empty) {
 TEST(test_pack_shuffle) {
   Pack pack;
   pack.shuffle();
+  /*pack.shuffle();
+  pack.shuffle();
+  pack.shuffle();
+  pack.shuffle();
+  pack.shuffle();
+  pack.shuffle();*/
   Card first_card = pack.deal_one();
   ASSERT_EQUAL(first_card, Card(Card::RANK_KING, Card::SUIT_CLUBS));
 }

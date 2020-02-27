@@ -5,6 +5,11 @@
       "taskLabel": "task-Card",
       "appliesTo": "Card.cpp",
       "type": "launch"
+    },
+    {
+      "taskLabel": "task-Pack_public_test",
+      "appliesTo": "Pack_public_test.cpp",
+      "type": "launch"
     }
   ]
 }

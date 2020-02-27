@@ -23,6 +23,11 @@ class Player {
   //REQUIRES player has less than MAX_HAND_SIZE cards
   //EFFECTS  adds Card c to Player's hand
   virtual void add_card(const Card &c) = 0;
+  virtual Card get_card(int index) = 0;
+  virtual std::vector<Card> get_hand() = 0;
+  virtual void print_hand(std::string trump) = 0;
+  virtual void sort_hand(std::string trump) = 0;
+  //virtual void add_cards(Pack& deck, int num) = 0;
 
   //REQUIRES round is 1 or 2
   //MODIFIES order_up_suit
