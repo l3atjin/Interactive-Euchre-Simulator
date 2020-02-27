@@ -31,6 +31,7 @@ private:
 	int trick1;
 	int trick2;
 	int leader;
+	bool orderedUp;
 
 public:
 	Game(string name0_in, string type0_in,
@@ -89,6 +90,7 @@ public:
 				}
 				if (players.at(i)->make_trump(upcard, isDealer, j, trumpSuit))
 				{
+
 					break;
 				}
 			}
@@ -141,6 +143,7 @@ public:
 
 	void team1Win()
 	{
+
 		score1++;
 		cout << player0->get_name() <<
 			" and " << player2->get_name()

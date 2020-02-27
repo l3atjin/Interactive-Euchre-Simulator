@@ -18,24 +18,13 @@ private:
 	//hand of SimplePlayer
 	std::vector<Card> hand;
 
-public:
-	SimplePlayer()
-	{}
 
-	SimplePlayer(std::string name_in)
-		: name(name_in) {}
-
-	virtual std::vector<Card> get_hand()
-	{
-		return hand;
-	}
-
-	virtual void sort_hand(std::string trump) override
+	void sort_hand(std::string trump)
 	{
 		Card temp;
 		for (unsigned int i = 0; i < 15; i++)
 		{
-			for (unsigned int j = 0; j < hand.size()-1; j++)
+			for (unsigned int j = 0; j < hand.size() - 1; j++)
 			{
 				if (!Card_less(hand.at(j), hand.at(j + 1), trump))
 				{
@@ -46,20 +35,28 @@ public:
 			}
 		}
 	}
-	//EFFECTS returns card at given index
-	virtual Card get_card(int index) override
-	{
-		return hand.at(index);
-	}
 
-	virtual void print_hand(std::string trump) override
+
+	//void print_hand(std::string trump)
+	//{
+	//	sort_hand(trump);
+	//	for (unsigned int i = 0; i < hand.size(); i++)
+	//	{
+	//		std::cout << get_card(i) << std::endl;
+	//	}
+	//	std::cout << std::endl;
+	//}
+
+public:
+	SimplePlayer()
+	{}
+
+	SimplePlayer(std::string name_in)
+		: name(name_in) {}
+
+	virtual std::vector<Card> get_hand()
 	{
-		sort_hand(trump);
-		for (unsigned int i = 0; i < hand.size(); i++)
-		{
-			std::cout << get_card(i) << std::endl;
-		}
-		std::cout << std::endl;
+		return hand;
 	}
 
 	//EFFECTS returns player's name
@@ -232,15 +229,7 @@ public:
 		std::vector<Card> hand;
 		//bool islead;
 
-	public:
-
-		HumanPlayer()
-		{}
-
-		HumanPlayer(std::string name_in)
-			: name(name_in) {}
-
-		virtual void sort_hand(std::string trump) override
+		void sort_hand(std::string trump)
 		{
 			Card temp;
 			for (unsigned int i = 0; i < 15; i++)
@@ -257,6 +246,30 @@ public:
 			}
 		}
 
+		//Card get_card(int index)
+		//{
+		//	return hand.at(index);
+		//}
+
+		//void print_hand(std::string trump)
+		//{
+		//	sort_hand(trump);
+		//	for (unsigned int i = 0; i < hand.size(); i++)
+		//	{
+		//		std::cout << get_card(i) << std::endl;
+		//	}
+		//	std::cout << std::endl;
+		//}
+
+	public:
+
+		HumanPlayer()
+		{}
+
+		HumanPlayer(std::string name_in)
+			: name(name_in) {}
+
+		
 		
 
 		virtual std::vector<Card> get_hand()
@@ -269,20 +282,7 @@ public:
 			return name;
 		}
 
-		virtual Card get_card(int index) override
-		{
-			return hand.at(index);
-		}
-
-		virtual void print_hand(std::string trump) override
-		{
-			sort_hand(trump);
-			for (unsigned int i = 0; i < hand.size(); i++)
-			{
-				std::cout << get_card(i) << std::endl;
-			}
-			std::cout << std::endl;
-		}
+		
 
 		//REQUIRES player has less than MAX_HAND_SIZE cards
 		//EFFECTS  adds Card c to Player's hand
