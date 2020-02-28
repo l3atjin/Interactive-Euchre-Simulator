@@ -37,10 +37,7 @@ public:
          string name2_in, string type2_in,
          string name3_in, string type3_in,
          Pack deck_in, int score_in, string shuffle_in)
-    : /*score1(0), score2(0), round(0),
-       dealer(0), trick1(0), trick2(0),
-       leader(1),*/
-    deck(deck_in), maxScore(score_in) {
+    : deck(deck_in), maxScore(score_in) {
         player0 = Player_factory(name0_in, type0_in);
         players.push_back(player0);
         player1 = Player_factory(name1_in, type1_in);
@@ -75,11 +72,6 @@ public:
         return temp;
     }
     
-    void set_leader(int index)
-    {
-        leader = index;
-    }
-    
     vector<Player*> get_players()
     {
         return players;
@@ -98,12 +90,17 @@ public:
                 }
                 if (players.at((dealer+j)%4)->make_trump(upcard, isDealer, i, trumpSuit))
                 {
+					cout << players.at((dealer + j) % 4)->get_name() << " orders up " << trumpSuit << endl;
+	
 					if (i == 1)
 					{
 						players.at(dealer % 4)->add_and_discard(upcard);
+						cout << endl;
 					}
-					cout << players.at((dealer + j) % 4)->get_name() << " orders up " << trumpSuit << endl;
-					cout << endl;
+					else if (i == 2)
+					{
+						cout << endl;
+					}
                     if (((dealer + j) % 4) %2 == 0)
                     {
                         is1OrderUp = true;
@@ -125,14 +122,6 @@ public:
     
     void deal()
     {
-        /*for (int i = 0; i < 2; i++)
-         {
-         players.at((dealer + 1) % 4)->add_cards(deck, 3 - i);
-         players.at((dealer + 2) % 4)->add_cards(deck, 2 + i);
-         players.at((dealer + 3) % 4)->add_cards(deck, 3 - i);
-         players.at((dealer + 4) % 4)->add_cards(deck, 2 + i);
-         }
-         */
 		cout << players.at(dealer%4)->get_name() << " deals" << endl;
         for (int i = 0; i < 2; i++) {
             
@@ -155,7 +144,6 @@ public:
                 players.at((dealer + 4) % 4)->add_card(deck.deal_one());
             }
         }
-        
     }
     
     void reset(string isShuffle) {
@@ -177,17 +165,7 @@ public:
     {
         return round;
     }
-    
-    Pack get_deck()
-    {
-        return deck;
-    }
-    
-    int get_score2()
-    {
-        return score2;
-    }
-    
+   
     void team2Win()
     {
         if (is2OrderUp && (trick2 == 3 || trick2 == 4))
@@ -222,11 +200,6 @@ public:
 			<< " have " << score2
 			<< " points" << endl;
 		cout << endl;
-    }
-    
-    int get_score1()
-    {
-        return score1;
     }
     
     void team1Win()
@@ -270,11 +243,6 @@ public:
         return maxScore;
     }
     
-    void set_round()
-    {
-        round++;
-    }
-    
     bool isWin1()
     {
         if (trick1 >= 3 && (trick1 + trick2) == 5)
@@ -293,21 +261,6 @@ public:
         return false;
     }
     
-    /*int find_Winner(vector<Card> cards, string trump)
-     {
-     Card max = cards.at(0);
-     int index;
-     for (unsigned int i = 0; i < cards.size()-1; i++)
-     {
-     if (max < cards.at(0))
-     {
-     max = cards.at(0);
-     index = i;
-     }
-     }
-     return index;
-     }*/
-    
     void play_trick(string trump)
     {
         Card led_card;
@@ -322,28 +275,11 @@ public:
         
         while (!isWin1() && !isWin2())
         {
-            //unsigned int leader1;
             led_card = players.at(leader % 4)->lead_card(trump);
 			cout << led_card << " led by " << players.at(leader % 4)->get_name() << endl;
             winnerCard = led_card;
             cards.at(leader % 4) = led_card;
             winner = leader%4;
-            /*for (unsigned int i = 0; i < players.size(); i++)
-             {
-             leader1 = leader;
-             cout << "card_less" << endl;
-             if (leader1 == i)
-             {
-             continue;
-             }
-             if (Card_less(winnerCard, players.at((leader + i) % 4)->play_card(led_card, trump), led_card, trump))
-             {
-             cout << "play_card" << endl;
-             winnerCard = players.at((leader + i) % 4)->play_card(led_card, trump);
-             winner = (leader + i) % 4;
-             }
-             }
-             cout << "exited for loop in play_card" << endl;*/
             
             played_card1 = players.at((leader + 1) % 4)->play_card(led_card, trump);
 			cout << played_card1 << " played by " << players.at((leader + 1) % 4)->get_name() << endl;
@@ -369,7 +305,6 @@ public:
                 winnerCard = played_card3;
                 winner = (leader + 3) % 4;
             }
-            //winner = find_Winner(cards, trump);
             leader = winner;
             if (winner%2 == 0)
             {
@@ -412,9 +347,6 @@ bool isShuffle(string shuffle)
 
 int main(int argc, char* argv[])
 {
-    
-    //freopen("euchre_test50.in", "r", stdin);
-    
     ifstream input(argv[1]);
     string input2 = argv[2];
     int gamePoint = atoi(argv[3]);
@@ -431,7 +363,6 @@ int main(int argc, char* argv[])
         cout << "Error opening " << argv[1] << endl;
         return 1;
     }
-    
     Pack deck(input);
     Card upcard, trump;
     string trumpSuit;
@@ -461,7 +392,6 @@ int main(int argc, char* argv[])
 		cout << input5 << " and " << input9 << " win!" << endl;
 	}
 	
-    
     for (int i = 0; i < int(game.get_players().size()); ++i)
     {
         delete game.get_players().at(i);

@@ -37,7 +37,7 @@ private:
 	}
 
 
-	void print_hand(std::string trump)
+	/*void print_hand(std::string trump)
 	{
 		sort_hand(trump);
 		for (unsigned int i = 0; i < hand.size(); i++)
@@ -45,7 +45,7 @@ private:
 			std::cout << hand.at(i) << std::endl;
 		}
 		std::cout << std::endl;
-	}
+	}*/
 
 public:
 	SimplePlayer()
@@ -238,7 +238,17 @@ public:
 	// is this right?
 	~SimplePlayer() {}
 };
-
+	void print_hand(std::vector<Card> hand, std::string name)
+	{
+		std::vector<Card> copy = hand;
+		std::sort(copy.begin(), copy.end());
+		for (unsigned int i = 0; i < copy.size(); i++)
+		{
+			std::cout << "Human player " << name << "'s hand: ["
+				<< i << "] " << copy.at(i) << std::endl;
+		}
+		//std::cout << std::endl;
+	}
 	class HumanPlayer : public Player {
 	private:
 		std::string name;
@@ -265,6 +275,7 @@ public:
 				}
 			}
 		}
+
 
 		//Card get_card(int index)
 		//{
@@ -319,37 +330,26 @@ public:
 		virtual bool make_trump(const Card& upcard, bool is_dealer,
 			int round, std::string& order_up_suit) const override {
 			std::string decision;
-			std::vector<Card> temp;
-			unsigned int index = 10;
-			unsigned int count = 0;
-			for (unsigned int j = 0; j < 5; j++)
+
+			if (is_dealer && round == 2)
 			{
-				for (unsigned int i = 0; i < hand.size(); i++)
-				{
-					if (j == index)
-					{
-						continue;
-					}
-					if (hand.at(j) < hand.at(i))
-					{
-						count++;
-					}
-				}
-				if (count == (4 - j))
-				{
-					temp.push_back(hand.at(j));
-					index = j;
-				}
+				print_hand(hand, name);
+				std::cout << "Human player " << name
+					<< ", please enter a suit, or \"pass\":" << std::endl;
+				std::cin >> decision;
+				order_up_suit = decision;
+				return true;
 			}
 
-			if (round == 1)
+			else if (round == 1)
 			{
-				for (unsigned int i = 0; i < hand.size(); i++)
-				{
-					std::cout << "Human player Judea's hand: ["
-						<< i << "]" << temp.at(i) << std::endl;
-				}
-				std::cout << "Human player " //<< this->get_name()
+				/*for (unsigned int i = 0; i < hand.size(); i++)
+				{pas
+					std::cout << "Human player " << name << "'s hand: ["
+						<< i << "]" << hand.at(i) << std::endl;
+				}*/
+				print_hand(hand, name);
+				std::cout << "Human player " << name
 					<< ", please enter a suit, or \"pass\":" << std::endl;
 					std::cin >> decision;
 				if (decision == "pass")
@@ -364,17 +364,8 @@ public:
 			}
 			else if (round == 2)
 			{
-				if (is_dealer)
-				{
-					order_up_suit = Suit_next(upcard.get_suit());
-					return true;
-				}
-				for (unsigned int i = 0; i < hand.size() ; i++)
-				{
-					std::cout << "Human player Judea's hand: ["
-						<< i << "]" << hand.at(i) << std::endl;
-				}
-				std::cout << "Human player " << this->get_name()
+				print_hand(hand, name);
+				std::cout << "Human player " << name
 					<< ", please enter a suit, or \"pass\":" << std::endl;
 				std::cin >> decision;
 				
@@ -395,14 +386,10 @@ public:
 		//EFFECTS  Player adds one card to hand and removes one card from hand.
 		virtual void add_and_discard(const Card& upcard) override {
 			std::string decision;
-			sort_hand(upcard.get_suit());
-			for (unsigned int i = 0; i < hand.size(); i++)
-			{
-				std::cout << "Human player" << name << "'s hand: ["
-					<< i << "]" << hand.at(i) << std::endl;
-			}
+			print_hand(hand, name);
 			std::cout << "Discard upcard: [-1]" << std::endl;
-			std::cout << "Human player " << this->get_name()
+			std::sort(hand.begin(), hand.end());
+			std::cout << "Human player " << name
 				<< ", please select a card to discard:" << std::endl;
 			std::cin >> decision;
 			int index = std::stoi(decision);
@@ -419,20 +406,14 @@ public:
 		//  is removed the player's hand.
 		virtual Card lead_card(const std::string& trump) override {
 			std::string decision;
+			print_hand(hand, name);
 			std::sort(hand.begin(), hand.end());
 			int index;
 			Card temp;
-			for (unsigned int i = 0; i < hand.size(); i++)
-			{
-				std::cout << "Human player" << name << "'s hand: ["
-					<< i << "]" << hand.at(i) << std::endl;
-			}
-			std::cout << "Discard upcard: [-1]" << std::endl;
-			std::cout << "Human player " << this->get_name()
+			std::cout << "Human player " << name
 				<< ", please select a card:" << std::endl;
 			std::cin >> decision;
 			index = std::stoi(decision);
-			std::cout << hand.at(index) << "led by " << this->get_name() << std::endl;
 			temp = hand.at(index);
 			hand.erase(hand.begin() + index);
 			return temp;
@@ -443,20 +424,14 @@ public:
 		//  The card is removed from the player's hand.
 		virtual Card play_card(const Card& led_card, const std::string& trump) override {
 			std::string decision;
+			print_hand(hand, name);
 			std::sort(hand.begin(), hand.end());
 			Card temp;
 			int index;
-			for (unsigned int i = 0; i < hand.size(); i++)
-			{
-				std::cout << "Human player" << name << "'s hand: ["
-					<< i << "]" << hand.at(i) << std::endl;
-			}
-			std::cout << "Discard upcard: [-1]" << std::endl;
-			std::cout << "Human player " << this->get_name()
+			std::cout << "Human player " << name
 				<< ", please select a card:" << std::endl;
 			std::cin >> decision;
 			index = std::stoi(decision);
-			std::cout << hand.at(index) << "played by " << this->get_name() << std::endl;
 			temp = hand.at(index);
 			hand.erase(hand.begin() + index);
 			return temp;
