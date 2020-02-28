@@ -25,10 +25,10 @@ private:
 		{
 			for (unsigned int j = 0; j < hand.size() - 1; j++)
 			{
-				if (!Card_less(hand.at(j), hand.at(j + 1), trump))
+				if (!Card_less(hand.at(j), hand.at(j + 1.0), trump))
 				{
-					temp = hand.at(j + 1);
-					hand.at(j + 1) = hand.at(j);
+					temp = hand.at(j + 1.0);
+					hand.at(j + 1.0) = hand.at(j);
 					hand.at(j) = temp;
 				}
 			}
@@ -155,7 +155,7 @@ public:
 				hand.erase(hand.begin() + i);
 				return temp;
 			}
-			if (hand.at(i+1).is_trump(trump))
+			if (hand.at(i + 1.0).is_trump(trump))
 			{
 				temp = hand.at(i);
 				hand.erase(hand.begin() + i);
@@ -235,10 +235,10 @@ public:
 			{
 				for (unsigned int j = 0; j < hand.size() - 1; j++)
 				{
-					if (!Card_less(hand.at(j), hand.at(j + 1), trump))
+					if (!Card_less(hand.at(j), hand.at(j + 1.0), trump))
 					{
-						temp = hand.at(j + 1);
-						hand.at(j + 1) = hand.at(j);
+						temp = hand.at(j + 1.0);
+						hand.at(j + 1.0) = hand.at(j);
 						hand.at(j) = temp;
 					}
 				}

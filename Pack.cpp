@@ -54,7 +54,7 @@ void Pack::shuffle() {
 		Card temp2[12];
 		for (int i = 0; i < 12; i++)
 		{
-			temp2[i] = cards[i + 12];
+			temp2[i] = cards[i + 12.0];
 		}
 		int count = 0;
 		for (int i = 0; i < PACK_SIZE; i++)

@@ -122,22 +122,22 @@ public:
 		*/
         for (int i = 0; i < 2; i++) {
           
-            for (int j; j < (3 - i); j++) {
+            for (int j = 0; j < (3 - i); j++) {
                 players.at((dealer + 1) % 4)->add_card(deck.deal_one());
             }
 
 
-            for (int j; j < (2 + i); j++) {
+            for (int j = 0; j < (2 + i); j++) {
                 players.at((dealer + 2) % 4)->add_card(deck.deal_one());
             }
 
 
-            for (int j; j < (3 - i); j++) {
+            for (int j = 0; j < (3 - i); j++) {
                 players.at((dealer + 3) % 4)->add_card(deck.deal_one());
             }
 
 
-            for (int j; j < (2 + i); j++) {
+            for (int j = 0; j < (2 + i); j++) {
                 players.at((dealer + 4) % 4)->add_card(deck.deal_one());
             }
         }
@@ -292,6 +292,7 @@ public:
 			led_card = players.at(leader % 4)->lead_card(trump);
 			winnerCard = led_card;
 			cards.at(leader % 4) = led_card;
+			int winner = 0;
 
 			/*for (unsigned int i = 0; i < players.size(); i++)
 			{
