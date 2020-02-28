@@ -21,14 +21,15 @@ private:
 	void sort_hand(std::string trump)
 	{
 		Card temp;
-		for (unsigned int i = 0; i < 15; i++)
+			
+		for (unsigned int i = 0; i < 21; i++)
 		{
 			for (unsigned int j = 0; j < hand.size() - 1; j++)
 			{
-				if (!Card_less(hand.at(j), hand.at(j + 1.0), trump))
+				if (!Card_less(hand.at(j), hand.at(j + 1), trump))
 				{
-					temp = hand.at(j + 1.0);
-					hand.at(j + 1.0) = hand.at(j);
+					temp = hand.at(j + 1);
+					hand.at(j + 1) = hand.at(j);
 					hand.at(j) = temp;
 				}
 			}
@@ -36,15 +37,15 @@ private:
 	}
 
 
-	//void print_hand(std::string trump)
-	//{
-	//	sort_hand(trump);
-	//	for (unsigned int i = 0; i < hand.size(); i++)
-	//	{
-	//		std::cout << get_card(i) << std::endl;
-	//	}
-	//	std::cout << std::endl;
-	//}
+	void print_hand(std::string trump)
+	{
+		sort_hand(trump);
+		for (unsigned int i = 0; i < hand.size(); i++)
+		{
+			std::cout << hand.at(i) << std::endl;
+		}
+		std::cout << std::endl;
+	}
 
 public:
 	SimplePlayer()
@@ -79,7 +80,12 @@ public:
 	virtual bool make_trump(const Card& upcard, bool is_dealer,
 		int round, std::string& order_up_suit) const override {
 		int trumpCount = 0;
-		if (round == 1) {
+		if (is_dealer && round == 2)
+		{
+			order_up_suit = Suit_next(upcard.get_suit());
+			return true;
+		}
+		else if (round == 1) {
 
 			//*hand.size() or MAX_HAND_SIZE?*
 			for (unsigned int i = 0; i < hand.size(); i++) {
@@ -143,7 +149,7 @@ public:
 		if (hand.at(0).is_trump(trump))
 		{
 			temp = hand.at(hand.size() - 1);
-			hand.erase(hand.end());
+			hand.erase(hand.begin() + hand.size() - 1);
 			return temp;
 		}
 
@@ -200,7 +206,22 @@ public:
 		sort_hand(trump);
 		// decrement this
 		for (int i = hand.size()-1; i > 0; i--) {
-			if (hand.at(i).get_suit() == led_card.get_suit()) 
+			if (led_card.is_left_bower(trump))
+			{
+				if (hand.at(hand.size() - 1).is_trump(trump))
+				{
+					c = hand.at(i);
+					hand.erase(hand.begin() + i);
+					return c;
+				}
+				else
+				{
+					c = hand.at(0);
+					hand.erase(hand.begin()+0);
+					return c;
+				}
+			}
+			else if ((hand.at(i).get_suit() == led_card.get_suit() && !hand.at(i).is_left_bower(trump)) || (hand.at(i).is_left_bower(trump) && trump == led_card.get_suit()))
 			{
 				c = hand.at(i);
 				hand.erase(hand.begin() + i);
@@ -377,7 +398,7 @@ public:
 			sort_hand(upcard.get_suit());
 			for (unsigned int i = 0; i < hand.size(); i++)
 			{
-				std::cout << "Human player Judea's hand: ["
+				std::cout << "Human player" << name << "'s hand: ["
 					<< i << "]" << hand.at(i) << std::endl;
 			}
 			std::cout << "Discard upcard: [-1]" << std::endl;
@@ -403,7 +424,7 @@ public:
 			Card temp;
 			for (unsigned int i = 0; i < hand.size(); i++)
 			{
-				std::cout << "Human player Judea's hand: ["
+				std::cout << "Human player" << name << "'s hand: ["
 					<< i << "]" << hand.at(i) << std::endl;
 			}
 			std::cout << "Discard upcard: [-1]" << std::endl;
@@ -427,7 +448,7 @@ public:
 			int index;
 			for (unsigned int i = 0; i < hand.size(); i++)
 			{
-				std::cout << "Human player Judea's hand: ["
+				std::cout << "Human player" << name << "'s hand: ["
 					<< i << "]" << hand.at(i) << std::endl;
 			}
 			std::cout << "Discard upcard: [-1]" << std::endl;

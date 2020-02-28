@@ -86,24 +86,7 @@ bool Card::is_right_bower(const std::string& trump) const
 //EFFECTS Returns true if card is the Jack of the next suit
 bool Card::is_left_bower(const std::string& trump) const
 {
-	std::string left_suit;
-	if (trump == SUIT_SPADES)
-	{
-		left_suit = SUIT_CLUBS;
-	}
-	else if (trump == SUIT_CLUBS)
-	{
-		left_suit = SUIT_SPADES;
-	}
-	else if (trump == SUIT_HEARTS)
-	{
-		left_suit = SUIT_DIAMONDS;
-	}
-	else
-	{
-		left_suit = SUIT_HEARTS;
-	}
-	if (rank == RANK_JACK && suit == left_suit)
+	if (suit == Suit_next(trump) && rank == RANK_JACK)
 	{
 		return true;
 	}
@@ -319,6 +302,26 @@ bool Card_less(const Card& a, const Card& b, const Card& led_card,
 	const std::string& trump)
 {
 	std::string led_suit = led_card.get_suit();
+	if (b.is_right_bower(trump))
+	{
+		return true;
+	}
+	else if (a.is_right_bower(trump))
+	{
+		return false;
+	}
+	else if (a.is_left_bower(trump) && !b.is_right_bower(trump))
+	{
+		return false;
+	}
+	else if (a.is_left_bower(trump) && b.is_right_bower(trump))
+	{
+		return true;
+	}
+	else if (b.is_left_bower(trump))
+	{
+		return true;
+	}
 	if (a.is_trump(trump) && !b.is_trump(trump))
 	{
 		return false;

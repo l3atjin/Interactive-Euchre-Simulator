@@ -62,7 +62,7 @@ TEST(test_make_trump) {
     string order_up_suit = "Clubs";
 
     //testing with empty hand;
-    ASSERT_FALSE(bold->make_trump(c6, false, 1, order_up_suit));
+    ASSERT_FALSE(bold->make_trump(c6, false, 2, order_up_suit));
     
     bold->add_card(c2);
     bold->add_card(c3);
@@ -287,6 +287,8 @@ TEST(test_play_card) {
     Player* teneg = Player_factory("Teneg", "Simple");
     Player* erguu = Player_factory("Erguu", "Simple");
     Player* niceguy = Player_factory("NiceGuy", "Simple");
+    
+    
 
     Card c0("Ten", "Hearts");
     Card c1("Nine", "Diamonds");

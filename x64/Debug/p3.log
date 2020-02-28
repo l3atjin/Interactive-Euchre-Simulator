@@ -1,19 +1,5 @@
-﻿  Card.cpp
-  Player.cpp
-  Player_public_test.cpp
+﻿  Player.cpp
+  euchre.cpp
+  Pack.cpp
   Generating Code...
-C:\Users\Susan\Documents\EECS280\p3\Player.cpp(293): warning C4700: uninitialized local variable 'count' used
-  Player_tests.cpp
-Player_tests.obj : error LNK2005: "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl operator<<(class std::basic_ostream<char,struct std::char_traits<char> > &,class TestFailure const &)" (??6@YAAEAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AEAV01@AEBVTestFailure@@@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "void __cdecl assert_almost_equal(double,double,double,int)" (?assert_almost_equal@@YAXNNNH@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "void __cdecl assert_false(bool,int)" (?assert_false@@YAX_NH@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "void __cdecl assert_true(bool,int)" (?assert_true@@YAX_NH@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl demangle(char const *)" (?demangle@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "private: class std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > > __cdecl TestSuite::get_test_names_to_run(int,char * *)" (?get_test_names_to_run@TestSuite@@AEAA?AV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@HPEAPEAD@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "public: void __cdecl TestCase::print(bool)" (?print@TestCase@@QEAAX_N@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "public: void __cdecl TestCase::run(bool)" (?run@TestCase@@QEAAX_N@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "public: int __cdecl TestSuite::run_tests(int,char * *)" (?run_tests@TestSuite@@QEAAHHPEAPEAD@Z) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: main already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "private: static bool TestSuite::incomplete" (?incomplete@TestSuite@@0_NA) already defined in Player_public_test.obj
-Player_tests.obj : error LNK2005: "private: static class TestSuite * TestSuite::instance" (?instance@TestSuite@@0PEAV1@EA) already defined in Player_public_test.obj
-C:\Users\Susan\Documents\EECS280\p3\x64\Debug\p3.exe : fatal error LNK1169: one or more multiply defined symbols found
+  p3.vcxproj -> C:\Users\Susan\Documents\EECS280\p3\x64\Debug\p3.exe
