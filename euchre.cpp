@@ -23,15 +23,16 @@ private:
 	Player* player3;
 	vector<Player*> players;
 	Pack deck;
-	int round;
-	int score1;
-	int score2;
+	int round = 0;
+	int score1 = 0;
+	int score2 = 0;
 	int maxScore;
-	int dealer;
-	int trick1;
-	int trick2;
-	int leader;
-	bool orderedUp;
+	unsigned int dealer = 0;
+	int trick1 = 0;
+	int trick2 = 0;
+	int leader = 1;
+	bool is1OrderUp = false;
+	bool is2OrderUp = false;
 
 public:
 	Game(string name0_in, string type0_in,
@@ -39,9 +40,9 @@ public:
 		string name2_in, string type2_in,
 		string name3_in, string type3_in,
 		Pack deck_in, int score_in, string shuffle_in)
-		: score1(0), score2(0), round(0),
+		: /*score1(0), score2(0), round(0),
 		dealer(0), trick1(0), trick2(0),
-		leader(1),
+		leader(1),*/
 		deck(deck_in), maxScore(score_in) {
 		player0 = Player_factory(name0_in, type0_in);
 		players.push_back(player0);
@@ -52,6 +53,7 @@ public:
 		player3 = Player_factory(name3_in, type3_in);
 		players.push_back(player3);
 	}
+
 	bool isGameOver()
 	{
 		if (score1 == maxScore || score2 == maxScore)
@@ -61,7 +63,6 @@ public:
 		return false;
 	}
 
-
 	void shuffle()
 	{
 		deck.shuffle();
@@ -69,7 +70,7 @@ public:
 
 	Card make_upcard()
 	{
-		deck.deal_one();
+		return deck.deal_one();
 	}
 
 	void set_leader(int index)
@@ -77,20 +78,32 @@ public:
 		leader = index;
 	}
 
+	vector<Player*> get_players()
+	{
+		return players;
+	}
+
 	void choose_trump(const Card& upcard, string& trumpSuit)
 	{
 		bool isDealer = false;
-		for (int round = 0; round < 2; round++)
+		for (int i = 0; i < 2; i++)
 		{
-			for (unsigned int i = 0; i < players.size(); i++)
+			for (unsigned int j = 0; j < players.size(); j++)
 			{
-				if (i == dealer)
+				if (j == dealer)
 				{
 					isDealer = true;
 				}
-				if (players.at(i)->make_trump(upcard, isDealer, round, trumpSuit))
+				if (players.at(j)->make_trump(upcard, isDealer, i, trumpSuit))
 				{
-
+					if (j%2 == 0)
+					{
+						is1OrderUp = true;
+					}
+					else
+					{
+						is2OrderUp = true;
+					}
 					break;
 				}
 			}
@@ -133,7 +146,12 @@ public:
 
 	void reset() {
 		deck.reset();
-		deck.shuffle();
+		trick1 = 0;
+		trick2 = 0;
+		is1OrderUp = false;
+		is2OrderUp = false;
+		dealer++;
+		leader = dealer + 1;
 	}
 
 	int get_round()
@@ -153,10 +171,32 @@ public:
 
 	void team2Win()
 	{
-		score2++;
-		cout << player1->get_name() <<
-			" and " << player3->get_name()
-			<< " win the hand" << endl;
+		if (is2OrderUp && (trick2 == 3 || trick2 == 4))
+		{
+			score2++;
+			cout << player1->get_name() <<
+				" and " << player3->get_name()
+				<< " win the hand" << endl;
+			cout << endl;
+		}
+		else if (is2OrderUp && trick2 == 5)
+		{
+			score2 += 2;
+			cout << player1->get_name() <<
+				" and " << player3->get_name()
+				<< " win the hand" << endl;
+			cout << endl;
+			cout << "march!" << endl;
+		}
+		else if (is1OrderUp)
+		{
+			score2 += 2;
+			cout << player1->get_name() <<
+				" and " << player3->get_name()
+				<< " win the hand" << endl;
+			cout << endl;
+			cout << "euchred!" << endl;
+		}
 	}
 
 	int get_score1()
@@ -166,11 +206,32 @@ public:
 
 	void team1Win()
 	{
-
-		score1++;
-		cout << player0->get_name() <<
-			" and " << player2->get_name()
-			<< " win the hand" << endl;
+		if (is1OrderUp && (trick1 == 3 || trick1 == 4))
+		{
+			score1++;
+			cout << player0->get_name() <<
+				" and " << player2->get_name()
+				<< " win the hand" << endl;
+			cout << endl;
+		}
+		else if(is1OrderUp && trick1 == 5)
+		{
+			score1+=2;
+			cout << player0->get_name() <<
+				" and " << player2->get_name()
+				<< " win the hand" << endl;
+			cout << endl;
+			cout << "march!" << endl;
+		}
+		else if (is2OrderUp)
+		{
+			score1 += 2;
+			cout << player0->get_name() <<
+				" and " << player2->get_name()
+				<< " win the hand" << endl;
+			cout << endl;
+			cout << "euchred!" << endl;
+		}
 	}
 
 	int get_maxScore()
@@ -185,21 +246,23 @@ public:
 
 	bool isWin1()
 	{
-		if (trick1 >= 3)
+		if (trick1 >= 3 && (trick1 + trick2) == 5)
 		{
 			return true;
 		}
+		return false;
 	}
 
 	bool isWin2()
 	{
-		if (trick2 >= 3)
+		if (trick2 >= 3 && (trick1 + trick2) == 5)
 		{
 			return true;
 		}
+		return false;
 	}
 
-	int find_Winner(vector<Card> cards, string trump)
+	/*int find_Winner(vector<Card> cards, string trump)
 	{
 		Card max = cards.at(0);
 		int index;
@@ -212,7 +275,7 @@ public:
 			}
 		}
 		return index;
-	}
+	}*/
 
 	void play_trick(string trump)
 	{
@@ -221,19 +284,46 @@ public:
 		Card played_card2;
 		Card played_card3;
 		vector <Card> cards;
+		Card winnerCard;
 		int winner;
 
-		while (!isWin1 && !isWin2)
+		while (!isWin1() && !isWin2())
 		{
 			led_card = players.at(leader % 4)->lead_card(trump);
+			winnerCard = led_card;
 			cards.at(leader % 4) = led_card;
+
+			/*for (unsigned int i = 0; i < players.size(); i++)
+			{
+				if (Card_less(winnerCard, players.at((leader + i) % 4)->play_card(led_card, trump), led_card, trump))
+				{
+					winnerCard = players.at((leader + i) % 4)->play_card(led_card, trump);
+					winner = (leader + i) % 4;
+				}
+			}*/
+
 			played_card1 = players.at((leader + 1) % 4)->play_card(led_card, trump);
 			cards.at((leader + 1) % 4) = played_card1;
+			if (Card_less(winnerCard, played_card1, led_card, trump))
+			{
+				winnerCard = played_card1;
+				winner = (leader + 1) % 4;
+			}
 			played_card2 = players.at((leader + 2) % 4)->play_card(led_card, trump);
-			cards.at((leader + 1) % 4) = played_card2;
+			cards.at((leader + 2) % 4) = played_card2;
+			if (Card_less(winnerCard, played_card2, led_card, trump))
+			{
+				winnerCard = played_card2;
+				winner = (leader + 2) % 4;
+			}
 			played_card3 = players.at((leader + 3) % 4)->play_card(led_card, trump);
-			cards.at((leader + 1) % 4) = played_card3;
-			winner = find_Winner(cards, trump);
+			cards.at((leader + 3) % 4) = played_card3;
+			if (Card_less(winnerCard, played_card3, led_card, trump))
+			{
+				winnerCard = played_card3;
+				winner = (leader + 3) % 4;
+			}
+			//winner = find_Winner(cards, trump);
 			leader = winner;
 			if (winner%2 == 0)
 			{
@@ -244,18 +334,19 @@ public:
 				trick2++;
 			}
 		}
-		if (isWin1)
+		if (isWin1())
 		{
 			team1Win();
 		}
-		else {
+		else if(isWin2())
+		{
 			team2Win();
 		}
 	}
 };
 
 void print_exec(int size, char* array[]) {
-	for (unsigned int i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
 		cout << array[i] << " ";
 	}
@@ -272,7 +363,16 @@ bool isShuffle(string shuffle)
 int main(int argc, char* argv[])
 {
 	ifstream input(argv[1]);
-
+	string input2 = argv[2];
+	int gamePoint = atoi(argv[3]);
+	string input3 = argv[4];
+	string input4 = argv[5];
+	string input5 = argv[6];
+	string input6 = argv[7];
+	string input7 = argv[8];
+	string input8 = argv[9];
+	string input9 = argv[10];
+	string input10 = argv[11];
 	if (!input.is_open())
 	{
 		cout << "Error opening " << argv[1] << endl;
@@ -283,11 +383,14 @@ int main(int argc, char* argv[])
 	Card upcard, trump;
 	string trumpSuit;
 
-	Game game(argv[4], argv[5], argv[6], argv[7], argv[8],
-		argv[9], argv[10], argv[11], deck, atoi(argv[11]));
+	Game game(input3, input4, input5, input6, input7,
+		input8, input9, input10, deck, gamePoint, input2);
 
 	print_exec(argc, argv);
-	game.shuffle();
+	if (isShuffle(input2))
+	{
+		game.shuffle();
+	}
 	while (!game.isGameOver())
 	{
 		cout << "Hand " << game.get_round() << endl;
@@ -295,15 +398,12 @@ int main(int argc, char* argv[])
 		upcard = game.make_upcard();
 		game.choose_trump(upcard, trumpSuit);
 		game.play_trick(trumpSuit);
-
-
-
+		game.reset();
 	}
 
-	for (int i = 0; i < int(players.size()); ++i) 
+	for (int i = 0; i < int(game.get_players().size()); ++i) 
 	{
-		delete players[i];
+		delete game.get_players().at(i);
 	}
-
 	return 0;
 }
