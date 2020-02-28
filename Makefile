@@ -90,3 +90,11 @@ style :
     --files $(FILES)
 	@echo "########################################"
 	@echo "EECS 280 style checks PASS"
+	sync :
+	rsync \
+    -rtv \
+    --delete \
+    --exclude '.git*' \
+    --filter=':- .gitignore' \
+    ../p3/ \
+    batjin@login.engin.umich.edu:p3/
