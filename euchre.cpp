@@ -6,7 +6,7 @@
 #include "Player.h"
 #include <vector>
 #include <algorithm>
-#include <string>
+#include <cstring>
 #include <cmath>
 #include <fstream>
 
@@ -272,7 +272,6 @@ public:
         cards.resize(4); 
         Card winnerCard;
         int winner;
-        
         while (!isWin1() && !isWin2())
         {
             led_card = players.at(leader % 4)->lead_card(trump);
@@ -345,38 +344,63 @@ bool isShuffle(string shuffle)
     return false;
 }
 
-int main(int argc, char* argv[])
+bool checkInput(int argc, char* argv[])
 {
+	if (argc != 12)
+	{
+		return false;
+	}
+	if (strcmp(argv[2], "shuffle") != 0 && strcmp(argv[2], "noshuffle") != 0)
+	{
+		return false;
+	}
+	if (atoi(argv[3]) < 1 || atoi(argv[3]) > 100)
+	{
+		return false;
+	}
+	if (strcmp(argv[5], "Simple") != 0 && strcmp(argv[5], "Human") != 0)
+	{
+		return false;
+	}
+	if (strcmp(argv[7], "Simple") != 0 && strcmp(argv[7], "Human") != 0)
+	{
+		return false;
+	}
+	if (strcmp(argv[9], "Simple") != 0 && strcmp(argv[9], "Human") != 0)
+	{
+		return false;
+	}
+	if (strcmp(argv[11], "Simple") != 0 && strcmp(argv[11], "Human") != 0)
+	{
+		return false;
+	}
+	return true;
+}
+
+int main(int argc, char* argv[]) {
     ifstream input(argv[1]);
     string input2 = argv[2];
     int gamePoint = atoi(argv[3]);
-    string input3 = argv[4];
-    string input4 = argv[5];
-    string input5 = argv[6];
-    string input6 = argv[7];
-    string input7 = argv[8];
-    string input8 = argv[9];
-    string input9 = argv[10];
-    string input10 = argv[11];
-    if (!input.is_open())
-    {
+    if (!input.is_open()){
         cout << "Error opening " << argv[1] << endl;
         return 1;
     }
+	if (!checkInput(argc, argv)){
+		cout << "Usage: euchre.exe PACK_FILENAME [shuffle|noshuffle] "
+			<< "POINTS_TO_WIN NAME1 TYPE1 NAME2 TYPE2 NAME3 TYPE3 "
+			<< "NAME4 TYPE4" << endl;
+		return 1;
+	}
     Pack deck(input);
     Card upcard, trump;
     string trumpSuit;
-    
-    Game game(input3, input4, input5, input6, input7,
-              input8, input9, input10, deck, gamePoint, input2);
-    
+    Game game(argv[4], argv[5], argv[6], argv[7], argv[8],
+		argv[9], argv[10], argv[11], deck, gamePoint, input2);
     print_exec(argc, argv);
-    if (isShuffle(input2))
-    {
+    if (isShuffle(input2)){
         game.shuffle();
     }
-    while (!game.isGameOver())
-    {
+    while (!game.isGameOver()){
         cout << "Hand " << game.get_round() << endl;
         game.deal();
         upcard = game.make_upcard();
@@ -384,17 +408,13 @@ int main(int argc, char* argv[])
         game.play_trick(trumpSuit);
         game.reset(input2);
     }
-	if (game.score1 >= gamePoint)
-	{
-		cout << input3 << " and " << input7 << " win!" << endl;
+	if (game.score1 >= gamePoint){
+		cout << argv[4] << " and " << argv[8] << " win!" << endl;
 	}
 	else {
-		cout << input5 << " and " << input9 << " win!" << endl;
+		cout << argv[6] << " and " << argv[10] << " win!" << endl;
 	}
-	
-    for (int i = 0; i < int(game.get_players().size()); ++i)
-    {
+    for (int i = 0; i < int(game.get_players().size()); ++i){
         delete game.get_players().at(i);
     }
-    return 0;
 }
