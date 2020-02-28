@@ -80,7 +80,7 @@ public:
 	void choose_trump(const Card& upcard, string& trumpSuit)
 	{
 		bool isDealer = false;
-		for (int j = 0; j < 2; j++)
+		for (int round = 0; round < 2; round++)
 		{
 			for (unsigned int i = 0; i < players.size(); i++)
 			{
@@ -88,7 +88,7 @@ public:
 				{
 					isDealer = true;
 				}
-				if (players.at(i)->make_trump(upcard, isDealer, j, trumpSuit))
+				if (players.at(i)->make_trump(upcard, isDealer, round, trumpSuit))
 				{
 
 					break;
@@ -99,13 +99,36 @@ public:
 
 	void deal()
 	{
-		for (int i = 0; i < 2; i++)
+		/*for (int i = 0; i < 2; i++)
 		{
 			players.at((dealer + 1) % 4)->add_cards(deck, 3 - i);
 			players.at((dealer + 2) % 4)->add_cards(deck, 2 + i);
 			players.at((dealer + 3) % 4)->add_cards(deck, 3 - i);
 			players.at((dealer + 4) % 4)->add_cards(deck, 2 + i);
 		}
+		*/
+        for (int i = 0; i < 2; i++) {
+          
+            for (int j; j < (3 - i); j++) {
+                players.at((dealer + 1) % 4)->add_card(deck.deal_one());
+            }
+
+
+            for (int j; j < (2 + i); j++) {
+                players.at((dealer + 2) % 4)->add_card(deck.deal_one());
+            }
+
+
+            for (int j; j < (3 - i); j++) {
+                players.at((dealer + 3) % 4)->add_card(deck.deal_one());
+            }
+
+
+            for (int j; j < (2 + i); j++) {
+                players.at((dealer + 4) % 4)->add_card(deck.deal_one());
+            }
+        }
+
 	}
 
 	void reset() {

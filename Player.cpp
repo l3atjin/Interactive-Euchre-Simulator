@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "Pack.h"
 #include "Card.h"
 #include "Player.h"
 
@@ -301,7 +300,7 @@ public:
 			std::string decision;
 			std::vector<Card> temp;
 			unsigned int index = 10;
-			unsigned int count;
+			unsigned int count = 0;
 			for (unsigned int j = 0; j < 5; j++)
 			{
 				for (unsigned int i = 0; i < hand.size(); i++)

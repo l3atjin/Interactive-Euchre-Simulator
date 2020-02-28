@@ -19,21 +19,21 @@ TEST(test_player_get_name) {
     delete bobby;
 }
 
-//// Add more tests here
-//TEST(test_add_card) {
-//    Player* alice = Player_factory("Alice", "Simple");
-//    Card c(Card::RANK_NINE, Card::SUIT_HEARTS);
-//    Card c2(Card::RANK_KING, Card::SUIT_CLUBS);
-//    alice->add_card(c);
-//    ASSERT_EQUAL(alice->get_card(0), c);
-//    alice->add_card(c);
-//    alice->add_card(c);
-//    alice->add_card(c);
-//    alice->add_card(c2);
-//    ASSERT_EQUAL(alice->get_card(4), c2);
-//
-//    delete alice;
-//}
+// Add more tests here
+TEST(test_add_card) {
+    Player* alice = Player_factory("Alice", "Simple");
+    Card c(Card::RANK_NINE, Card::SUIT_HEARTS);
+    Card c2(Card::RANK_KING, Card::SUIT_CLUBS);
+    alice->add_card(c);
+    ASSERT_EQUAL(alice->lead_card("Hearts"), c);
+    alice->add_card(c);
+    alice->add_card(c);
+    alice->add_card(c);
+    alice->add_card(c2);
+    ASSERT_EQUAL(alice->lead_card("Hearts"), c2);
+
+    delete alice;
+}
 
 TEST(test_make_trump) {
     Player* bold = Player_factory("Bold", "Simple");
@@ -132,83 +132,95 @@ TEST(test_make_trump) {
     delete saraa;
     delete dorj;
 }
-//
-//TEST(test_add_and_discard) {
-//    Player* dorj = Player_factory("Dorj", "Simple");
-//    Player* bold = Player_factory("Bold", "Simple");
-//    Player* zulaa = Player_factory("Zulaa", "Simple");
-//    Player* saraa = Player_factory("Saraa", "Simple");
-//    Player* teneg = Player_factory("Teneg", "Simple");
-//
-//    Card c0("Ten", "Clubs");
-//    Card c1("Ten", "Spades");
-//    Card c2("Jack", "Spades");
-//    Card c3("Queen", "Clubs");
-//    Card c4("Nine", "Clubs");
-//    Card c5("Nine", "Hearts");
-//    Card c6("Nine", "Diamonds");
-//    Card c7("Ace", "Clubs");
-//    Card c8("King", "Clubs");
-//    //test when card has one card
-//    dorj->add_card(c1);
-//   
-//    //after adding upcard c0, c1 should be discarded
-//    dorj->add_and_discard(c0);
-//    ASSERT_EQUAL(c0, dorj->get_card(0));
-//
-//    bold->add_card(c2);
-//    bold->add_card(c1);
-//   
-//    //c1 should be discarded again, second least card 
-//    bold->add_and_discard(c0);
-//    ASSERT_EQUAL(c0, bold->get_card(0));
-//
-//    zulaa->add_card(c1);
-//    zulaa->add_card(c2);
-//    zulaa->add_card(c5);
-//    zulaa->add_card(c4);
-//    zulaa->add_card(c3);
-//	//zulaa->print_hand();
-//    //c5 should be discarded, c4 is trump  // lies
-//    zulaa->add_and_discard(c0);
-//	//zulaa->print_hand();
-//    ASSERT_EQUAL(c1, zulaa->get_card(0));
-//    //checking that c0 is 3rd card after sorting/discarding;
-//    ASSERT_EQUAL(c0, zulaa->get_card(2));
-//
-//    saraa->add_card(c1);
-//    saraa->add_card(c2);
-//    saraa->add_card(c6);
-//    saraa->add_card(c4);
-//    saraa->add_card(c5);
-//	//saraa->print_hand();
-//
-//    //c5 should be discarded, c5 and c6 both nine, but c5 is hearts  
-//    saraa->add_and_discard(c0);
-//	//saraa->print_hand();
-//    ASSERT_EQUAL(c6, saraa->get_card(0));
-//    //check that upcard is biggest now
-//    ASSERT_EQUAL(c2, saraa->get_card(4));
-//
-//    teneg->add_card(c0);
-//    teneg->add_card(c2);
-//    teneg->add_card(c7);
-//    teneg->add_card(c3);
-//    teneg->add_card(c8);
-//	//teneg->print_hand();
-//
-//    teneg->add_and_discard(c4);
-//	//teneg->print_hand();
-//
-//    //upcard should be discarded
-//    ASSERT_EQUAL(c0, teneg->get_card(0));
-//
-//    delete bold;
-//    delete zulaa;
-//    delete saraa;
-//    delete dorj;
-//    delete teneg;
-//}
+
+TEST(test_add_and_discard) {
+    Player* dorj = Player_factory("Dorj", "Simple");
+    Player* bold = Player_factory("Bold", "Simple");
+    Player* zulaa = Player_factory("Zulaa", "Simple");
+    Player* saraa = Player_factory("Saraa", "Simple");
+    Player* teneg = Player_factory("Teneg", "Simple");
+
+    Card c0("Ten", "Clubs");
+    Card c1("Ten", "Spades");
+    Card c2("Jack", "Spades");
+    Card c3("Queen", "Clubs");
+    Card c4("Nine", "Clubs");
+    Card c5("Nine", "Hearts");
+    Card c6("Nine", "Diamonds");
+    Card c7("Ace", "Clubs");
+    Card c8("King", "Clubs");
+    //test when card has one card
+    dorj->add_card(c1);
+   
+    //after adding upcard c0, c1 should be discarded
+    dorj->add_and_discard(c0);
+    ASSERT_EQUAL(c0, dorj->lead_card("Clubs"));
+
+    bold->add_card(c2);
+    bold->add_card(c1);
+   
+    //c1 should be discarded again, second least card 
+    bold->add_and_discard(c0);
+    ASSERT_EQUAL(c2, bold->lead_card("Clubs"));
+    ASSERT_EQUAL(c0, bold->lead_card("Clubs"));
+
+    zulaa->add_card(c1);
+    zulaa->add_card(c2);
+    zulaa->add_card(c5);
+    zulaa->add_card(c4);
+    zulaa->add_card(c3);
+
+	//zulaa->print_hand();
+    //c5 should be discarded, c4 is trump  // lies
+    zulaa->add_and_discard(c0);
+	//zulaa->print_hand();
+    ASSERT_EQUAL(c1, zulaa->lead_card("Clubs"));
+    //checking that c0 is 3rd card after sorting/discarding;
+    ASSERT_EQUAL(c2, zulaa->lead_card("Clubs"));
+    ASSERT_EQUAL(c3, zulaa->lead_card("Clubs"));
+    ASSERT_EQUAL(c0, zulaa->lead_card("Clubs"));
+    ASSERT_EQUAL(c4, zulaa->lead_card("Clubs"));
+
+    saraa->add_card(c1);
+    saraa->add_card(c2);
+    saraa->add_card(c6);
+    saraa->add_card(c4);
+    saraa->add_card(c5);
+	//saraa->print_hand();
+
+    //c5 should be discarded, c5 and c6 both nine, but c5 is hearts  
+    saraa->add_and_discard(c0);
+	//saraa->print_hand();
+    ASSERT_EQUAL(c1, saraa->lead_card("Clubs"));
+    //check that upcard is biggest now
+    ASSERT_EQUAL(c6, saraa->lead_card("Clubs"));
+    ASSERT_EQUAL(c2, saraa->lead_card("Clubs"));
+    ASSERT_EQUAL(c0, saraa->lead_card("Clubs"));
+    ASSERT_EQUAL(c4, saraa->lead_card("Clubs"));
+
+    teneg->add_card(c0);
+    teneg->add_card(c2);
+    teneg->add_card(c7);
+    teneg->add_card(c3);
+    teneg->add_card(c8);
+	//teneg->print_hand();
+
+    teneg->add_and_discard(c4);
+	//teneg->print_hand();
+
+    //upcard should be discarded
+    ASSERT_EQUAL(c2, teneg->lead_card("Clubs"));
+    ASSERT_EQUAL(c7, teneg->lead_card("Clubs"));
+    ASSERT_EQUAL(c8, teneg->lead_card("Clubs"));
+    ASSERT_EQUAL(c3, teneg->lead_card("Clubs"));
+    ASSERT_EQUAL(c0, teneg->lead_card("Clubs"));
+
+    delete bold;
+    delete zulaa;
+    delete saraa;
+    delete dorj;
+    delete teneg;
+}
 
 TEST(test_lead_card) {
     Player* dorj = Player_factory("Dorj", "Simple");
