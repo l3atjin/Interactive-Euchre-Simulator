@@ -221,7 +221,10 @@ public:
 					return c;
 				}
 			}
-			else if ((hand.at(i).get_suit() == led_card.get_suit() && !hand.at(i).is_left_bower(trump)) || (hand.at(i).is_left_bower(trump) && trump == led_card.get_suit()))
+			else if ((hand.at(i).get_suit() == led_card.get_suit() 
+				&& !hand.at(i).is_left_bower(trump)) 
+				|| (hand.at(i).is_left_bower(trump) 
+					&& trump == led_card.get_suit()))
 			{
 				c = hand.at(i);
 				hand.erase(hand.begin() + i);

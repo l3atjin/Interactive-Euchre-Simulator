@@ -351,6 +351,7 @@ TEST(test_play_card) {
     delete dorj;
     delete teneg;
     delete erguu;
+	delete niceguy;
 }
 
 TEST_MAIN()

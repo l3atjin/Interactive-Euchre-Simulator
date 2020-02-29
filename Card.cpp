@@ -158,42 +158,12 @@ bool operator<(const Card& lhs, const Card& rhs)
 //  Does not consider trump.
 bool operator>(const Card& lhs, const Card& rhs)
 {
-	int lhs_rank;
-	int rhs_rank;
-	int lhs_suit;
-	int rhs_suit;
-	for (int i = 0; i < NUM_RANKS; i++)
+	if (lhs < rhs)
 	{
-		if (RANK_NAMES_BY_WEIGHT[i] == lhs.get_rank()) {
-			lhs_rank = i;
-		}
-		if (RANK_NAMES_BY_WEIGHT[i] == rhs.get_rank()) {
-			rhs_rank = i;
-		}
+		return false;
 	}
-
-	for (int i = 0; i < NUM_SUITS; i++)
+	else if (lhs == rhs)
 	{
-		if (SUIT_NAMES_BY_WEIGHT[i] == lhs.get_suit()) {
-			lhs_suit = i;
-		}
-		if (SUIT_NAMES_BY_WEIGHT[i] == rhs.get_suit()) {
-			rhs_suit = i;
-		}
-	}
-	if (lhs_rank == rhs_rank)
-	{
-		if (lhs_suit < rhs_suit)
-		{
-			return false;
-		}
-		else if (lhs_suit == rhs_suit)
-		{
-			return false;
-		}
-		return true;
-	}
-	else if (lhs_rank < rhs_rank) {
 		return false;
 	}
 	return true;
@@ -303,33 +273,20 @@ bool Card_less(const Card& a, const Card& b, const Card& led_card,
 {
 	std::string led_suit = led_card.get_suit();
 	if (b.is_right_bower(trump))
-	{
 		return true;
-	}
+
 	else if (a.is_right_bower(trump))
-	{
 		return false;
-	}
 	else if (a.is_left_bower(trump) && !b.is_right_bower(trump))
-	{
 		return false;
-	}
 	else if (a.is_left_bower(trump) && b.is_right_bower(trump))
-	{
 		return true;
-	}
 	else if (b.is_left_bower(trump))
-	{
 		return true;
-	}
 	if (a.is_trump(trump) && !b.is_trump(trump))
-	{
 		return false;
-	}
 	else if (!a.is_trump(trump) && b.is_trump(trump))
-	{
 		return true;
-	}
 	else if (a.is_trump(trump) && b.is_trump(trump))
 	{
 		if (a < b)
@@ -339,13 +296,9 @@ bool Card_less(const Card& a, const Card& b, const Card& led_card,
 		else return false;
 	}
 	else if (a.is_trump(led_suit) && !b.is_trump(led_suit))
-	{
 		return false;
-	}
 	else if (!a.is_trump(led_suit) && b.is_trump(led_suit))
-	{
 		return true;
-	}
 	else if (a.is_trump(led_suit) && b.is_trump(led_suit))
 	{
 		if (a < b)
@@ -355,8 +308,6 @@ bool Card_less(const Card& a, const Card& b, const Card& led_card,
 		else return false;
 	}
 	else if (a < b)
-	{
 		return true;
-	}
 	return false;
 }

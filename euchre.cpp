@@ -90,31 +90,23 @@ public:
                 }
                 if (players.at((dealer+j)%4)->make_trump(upcard, isDealer, i, trumpSuit))
                 {
-					cout << players.at((dealer + j) % 4)->get_name() << " orders up " << trumpSuit << endl;
+					cout << players.at((dealer + j) % 4)->get_name() 
+						<< " orders up " << trumpSuit << endl;
 	
 					if (i == 1)
-					{
 						players.at(dealer % 4)->add_and_discard(upcard);
-						cout << endl;
-					}
-					else if (i == 2)
-					{
-						cout << endl;
-					}
                     if (((dealer + j) % 4) %2 == 0)
-                    {
                         is1OrderUp = true;
-                    }
                     else
-                    {
                         is2OrderUp = true;
-                    }
+					cout << endl;
 					i = 3;
                     break;
                 }
 				else
 				{
-					cout << players.at((dealer + j) % 4)->get_name() << " passes" << endl;
+					cout << players.at((dealer + j) % 4)->get_name() 
+						<< " passes" << endl;
 				}
             }
         }
@@ -263,10 +255,7 @@ public:
     
     void play_trick(string trump)
     {
-        Card led_card;
-        Card played_card1;
-        Card played_card2;
-        Card played_card3;
+		Card led_card, played_card1, played_card2, played_card3;
         vector <Card> cards;
         cards.reserve(4);
         cards.resize(4); 
@@ -275,13 +264,15 @@ public:
         while (!isWin1() && !isWin2())
         {
             led_card = players.at(leader % 4)->lead_card(trump);
-			cout << led_card << " led by " << players.at(leader % 4)->get_name() << endl;
+			cout << led_card << " led by " 
+				<< players.at(leader % 4)->get_name() << endl;
             winnerCard = led_card;
             cards.at(leader % 4) = led_card;
             winner = leader%4;
             
             played_card1 = players.at((leader + 1) % 4)->play_card(led_card, trump);
-			cout << played_card1 << " played by " << players.at((leader + 1) % 4)->get_name() << endl;
+			cout << played_card1 << " played by " 
+				<< players.at((leader + 1) % 4)->get_name() << endl;
             cards.at((leader + 1) % 4) = played_card1;
             if (Card_less(winnerCard, played_card1, led_card, trump))
             {
@@ -289,7 +280,8 @@ public:
                 winner = (leader + 1) % 4;
             }
             played_card2 = players.at((leader + 2) % 4)->play_card(led_card, trump);
-			cout << played_card2 << " played by " << players.at((leader + 2) % 4)->get_name() << endl;
+			cout << played_card2 << " played by " 
+				<< players.at((leader + 2) % 4)->get_name() << endl;
             cards.at((leader + 2) % 4) = played_card2;
             if (Card_less(winnerCard, played_card2, led_card, trump))
             {
@@ -297,7 +289,8 @@ public:
                 winner = (leader + 2) % 4;
             }
             played_card3 = players.at((leader + 3) % 4)->play_card(led_card, trump);
-			cout << played_card3 << " played by " << players.at((leader + 3) % 4)->get_name() << endl;
+			cout << played_card3 << " played by " 
+				<< players.at((leader + 3) % 4)->get_name() << endl;
             cards.at((leader + 3) % 4) = played_card3;
             if (Card_less(winnerCard, played_card3, led_card, trump))
             {
@@ -306,25 +299,17 @@ public:
             }
             leader = winner;
             if (winner%2 == 0)
-            {
                 trick1++;
-            }
             else
-            {
                 trick2++;
 
-            }
 			cout << players.at(winner)->get_name() << " takes the trick" << endl;
 			cout << endl;
         }
         if (isWin1())
-        {
             team1Win();
-        }
         else if(isWin2())
-        {
             team2Win();
-        }
     }
 };
 
@@ -377,6 +362,7 @@ bool checkInput(int argc, char* argv[])
 	return true;
 }
 
+
 int main(int argc, char* argv[]) {
     ifstream input(argv[1]);
     string input2 = argv[2];
@@ -408,12 +394,10 @@ int main(int argc, char* argv[]) {
         game.play_trick(trumpSuit);
         game.reset(input2);
     }
-	if (game.score1 >= gamePoint){
+	if (game.score1 >= gamePoint)
 		cout << argv[4] << " and " << argv[8] << " win!" << endl;
-	}
-	else {
+	else
 		cout << argv[6] << " and " << argv[10] << " win!" << endl;
-	}
     for (int i = 0; i < int(game.get_players().size()); ++i){
         delete game.get_players().at(i);
     }
